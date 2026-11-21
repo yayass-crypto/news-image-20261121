@@ -19,6 +19,7 @@ Run it locally with::
 import hashlib
 import os
 import shutil
+import struct
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -63,6 +64,18 @@ def check_format(path):
         raise SystemExit(f"{NAME} does not start with a PNG signature")
 
 
+def check_dimensions(path):
+    """Read the PNG IHDR chunk and confirm the image is at most 1024x1024."""
+    with open(path, "rb") as handle:
+        header = handle.read(33)
+    if len(header) < 33 or header[12:16] != b"IHDR":
+        raise SystemExit(f"{NAME} has no PNG IHDR chunk")
+    width, height = struct.unpack(">II", header[16:24])
+    if width > 1024 or height > 1024:
+        raise SystemExit(f"{NAME} is {width}x{height}, over the 1024x1024 limit")
+    return width, height
+
+
 def check_copy_complete(path):
     """Confirm the copy is whole: same bytes, same digest as the source."""
     with open(IMAGE, "rb") as handle:
@@ -79,8 +92,9 @@ def main():
     target = write_image(output_directory())
     size = check_size(target)
     check_format(target)
+    width, height = check_dimensions(target)
     digest = check_copy_complete(target)
-    print(f"wrote {target} ({size} bytes, sha256 {digest})")
+    print(f"wrote {target} ({width}x{height}, {size} bytes, sha256 {digest})")
     return 0
 
 

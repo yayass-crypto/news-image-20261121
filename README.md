@@ -28,6 +28,12 @@ image (1024×1024, under 1 MiB): **48 stories across 6 continents**.
 - **A footer ticker:** gold at a 14-month low, F1's V8 engines from 2030,
   Canada's record FIFA rank, the Edmonton Elks' Grey Cup win.
 
+## Map markers (12)
+
+1 New York · 2 Poland · 3 Kyiv · 4 Brussels · 5 Copenhagen · 6 Riyadh ·
+7 Strait of Hormuz · 8 Shenzhen · 9 Gopalpur · 10 Suva · 11 Wellington ·
+12 Sydney.
+
 ## Run it
 
 ```sh
